@@ -5,7 +5,11 @@ module.exports = {
   getAllTasks,
   getAllResources,
   getTaskById,
-  addTask
+  addTask,
+  getResourceById,
+  addResource,
+  getResourceByName,
+  addResource
 };
 
 // ********************** PROJECTS **********************
@@ -72,4 +76,26 @@ function addTask(taskData) {
 // ********************** RESOURCES **********************
 function getAllResources() {
   return db("resources");
+}
+
+function getResourceById(id) {
+  return db("resources")
+    .where({ id })
+    .first();
+}
+
+function getResourceByName(name) {
+  return db("resources")
+    .where({ name })
+    .first();
+}
+
+function addResource(resourceData) {
+  return db("resources")
+    .insert(resourceData, "id")
+    .then(responseIds => {
+      const [id] = responseIds;
+
+      return getResourceById(id);
+    });
 }
