@@ -13,7 +13,9 @@ exports.up = function(knex) {
         .unsigned()
         .notNullable()
         .references("id")
-        .inTable("projects");
+        .inTable("projects")
+        .onDelete("CASCADE")
+        .onUpdate("CASCADE");
       tbl.text("description").notNullable();
       tbl.text("notes");
       tbl.boolean("completed").defaultTo("false");
@@ -33,13 +35,17 @@ exports.up = function(knex) {
         .unsigned()
         .notNullable()
         .references("id")
-        .inTable("projects");
+        .inTable("projects")
+        .onDelete("CASCADE")
+        .onUpdate("CASCADE");
       tbl
         .integer("task_id")
         .unsigned()
         .notNullable()
         .references("id")
-        .inTable("tasks");
+        .inTable("tasks")
+        .onDelete("CASCADE")
+        .onUpdate("CASCADE");
     })
     .createTable("project_resource", tbl => {
       tbl.primary(["project_id", "resource_id"]);
@@ -48,13 +54,17 @@ exports.up = function(knex) {
         .unsigned()
         .notNullable()
         .references("id")
-        .inTable("projects");
+        .inTable("projects")
+        .onDelete("CASCADE")
+        .onUpdate("CASCADE");
       tbl
         .integer("resource_id")
         .unsigned()
         .notNullable()
         .references("id")
-        .inTable("resources");
+        .inTable("resources")
+        .onDelete("CASCADE")
+        .onUpdate("CASCADE");
     });
 };
 
