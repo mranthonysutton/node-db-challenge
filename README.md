@@ -66,7 +66,7 @@ Complete the following tasks:
   - [x] retrieving a list of resources.
   - [ ] adding projects.
   - [x] retrieving a list of projects.
-  - [ ] adding tasks.
+  - [x] adding tasks.
   - [x] retrieving a list of tasks. **The list of tasks should include the project name and project description**.
 - [x] When returning `project` or `task` information, the `completed` property should be `true` or `false`.
 
