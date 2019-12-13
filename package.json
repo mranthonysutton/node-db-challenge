@@ -1,0 +1,17 @@
+{
+  "name": "node-db-challenge",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:mranthonysutton/node-db-challenge.git",
+  "author": "Anthony <anthony@pop-os.localdomain>",
+  "license": "MIT",
+  "scripts": {
+    "server": "nodemon index.js"
+  },
+  "dependencies": {
+    "express": "^4.17.1",
+    "knex": "^0.20.4",
+    "nodemon": "^2.0.2",
+    "sqlite3": "^4.1.1"
+  }
+}
