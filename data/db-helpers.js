@@ -11,7 +11,8 @@ module.exports = {
   getResourceByName,
   addResource,
   getProjectById,
-  addProject
+  addProject,
+  getResourceByProjectId
 };
 
 // ********************** PROJECTS **********************
@@ -24,26 +25,42 @@ function getAllProjects() {
 }
 
 function getProjectById(id) {
+  // Return the call to get all of the projects based off of one id
   return db("projects")
     .where({ id })
     .first()
     .then(response => {
+      // Checks if the response for that id is valid
       if (response) {
-        const responseData = [response];
-        console.log(responseData);
-
+        // We want to grab all of the tasks, so we do a call within a call to return the task object array
         return db("tasks")
           .select("id", "description", "notes", "completed")
           .where({ project_id: id })
           .then(tasks => {
             tasks.map(item => {
-              return {
+              const tasks = {
                 ...item,
                 completed: !!item.completed
               };
             });
 
-            return { ...response, tasks };
+            return db("resources")
+              .select("id", "name", "description")
+              .join(
+                "project_resource",
+                "resources.id",
+                "project_resource.resource_id"
+              )
+              .where({ ["project_resource.project_id"]: id })
+              .then(resources => {
+                const resourceList = { ...resources };
+                return {
+                  ...response,
+                  completed: !!response.completed,
+                  tasks: tasks,
+                  resources: [resourceList]
+                };
+              });
           });
       } else {
         return null;
@@ -149,4 +166,11 @@ function addResource(resourceData) {
 
       return getResourceById(id);
     });
+}
+
+function getResourceByProjectId(projectId) {
+  return db("resources")
+    .select("*")
+    .join("project_resource", "resources.id", "project_resource.resource_id")
+    .where({ ["project_resource.project_id"]: projectId });
 }
