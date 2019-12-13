@@ -29,7 +29,22 @@ function getProjectById(id) {
     .first()
     .then(response => {
       if (response) {
-        return { ...response, completed: !!response.completed };
+        const responseData = [response];
+        console.log(responseData);
+
+        return db("tasks")
+          .select("id", "description", "notes", "completed")
+          .where({ project_id: id })
+          .then(tasks => {
+            tasks.map(item => {
+              return {
+                ...item,
+                completed: !!item.completed
+              };
+            });
+
+            return { ...response, tasks };
+          });
       } else {
         return null;
       }
@@ -96,6 +111,17 @@ function addTask(taskData) {
 
       return getTaskById(id);
     });
+}
+
+function getTasksByProjectId(id) {
+  return db("tasks")
+    .select("id", "description", "notes", "completed")
+    .where({ project_id: id })
+    .then(projects =>
+      projects.map(item => {
+        return { ...item, completed: !!item.completed };
+      })
+    );
 }
 
 // ********************** RESOURCES **********************
