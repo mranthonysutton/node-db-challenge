@@ -9,7 +9,9 @@ module.exports = {
   getResourceById,
   addResource,
   getResourceByName,
-  addResource
+  addResource,
+  getProjectById,
+  addProject
 };
 
 // ********************** PROJECTS **********************
@@ -19,6 +21,29 @@ function getAllProjects() {
       return { ...project, completed: !!project.completed };
     })
   );
+}
+
+function getProjectById(id) {
+  return db("projects")
+    .where({ id })
+    .first()
+    .then(response => {
+      if (response) {
+        return { ...response, completed: !!response.completed };
+      } else {
+        return null;
+      }
+    });
+}
+
+function addProject(projectData) {
+  return db("projects")
+    .insert(projectData, "id")
+    .then(responseIds => {
+      const [id] = responseIds;
+
+      return getProjectById(id);
+    });
 }
 
 // ********************** TASKS **********************
